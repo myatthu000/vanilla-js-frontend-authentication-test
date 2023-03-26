@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Test</title>
+</head>
+
+<body>
+    <div class="">
+        <h3>Register Form</h3>
+        <form id="formRegister">
+            <label for="name">Name</label>
+            <input type="text" name="name"> <br>
+            <label for="email">Email</label>
+            <input type="email" name="email"> <br>
+            <label for="password">Password</label>
+            <input type="password" name="password">
+            <button>Register</button>
+        </form>
+    </div>
+
+    <script src="node_modules/js-cookie/dist/js.cookie.min.js"></script>
+    <script>
+
+        const host = "http://127.0.0.1:8000/api";
+        let url = host + "/register";
+        let formRegister = document.getElementById("formRegister");
+
+        let headers = new Headers();
+
+        headers.append("Accept", "application/json");
+        headers.append("Content-Type", "application/json");
+
+
+        formRegister.addEventListener("submit", function (e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+            console.log(formData.get('name'), formData.get('email'), formData.get('password'));
+
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: headers,
+            })
+                .then(response => response.json())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+        })
+
+    </script>
+</body>
+
+</html>

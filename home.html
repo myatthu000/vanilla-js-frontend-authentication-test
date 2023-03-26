@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+
+<body>
+    <p>Home</p>
+    <p>This is can enter after authenticaiton .</p>
+
+    <button id="formLogout">Logout</button>
+
+</body>
+
+<script src="node_modules/js-cookie/dist/js.cookie.min.js"></script>
+<script>
+
+    if(!Cookies.get('token'))
+    {
+        location.href = "index.html"
+    }
+
+    const host = "http://127.0.0.1:8000/api";
+    let url = host + "/logout";
+    let formLogout = document.getElementById("formLogout");
+
+
+    var myHeaders = new Headers();
+    myHeaders.append("Accept", "application/json");
+    myHeaders.append("Authorization", "Bearer "+`${Cookies.get('token')}`);
+
+    //console.log(Cookies.get('token'))
+
+    formLogout.addEventListener("click",function(){
+        fetch(url,{
+            method:'POST',
+            headers: myHeaders,
+        })
+        .then(response => {
+            if(response.status === 204){
+                Cookies.remove('token');
+                location.href = "index.html";
+            }
+        })
+        .then(response => {
+            console.log(response);
+        })
+    })
+
+
+
+</script>
+
+</html>
